@@ -11,12 +11,12 @@
 require(["dojo/dom", "dojo/request/xhr", "dojo/_base/array", "dojo/dom-construct", "dojo/dom-class", "dojo/on", "dijit/Tooltip", "dojo/domReady!"], function(dom, xhr, array, constr, dClass, on, Tooltip){
 
 	on(dom.byId("profile-circle"), "click", function(){
-		window.location.href = "https://twitter.com/DavidSpriggs";
+		window.location.href = "http://cmv.io";
 	});
 
 	new Tooltip({
 	    connectId: dom.byId("profile-circle"),
-	    label: "Visit my Twitter",
+	    label: "Visit project page",
 	    position: ["below", "after"]
 	});
 
@@ -42,7 +42,7 @@ require(["dojo/dom", "dojo/request/xhr", "dojo/_base/array", "dojo/dom-construct
 
 				constr.create("p", { innerHTML: repo.description }, repoBox);
 
-				if (repo.homepage !== null && repo.homepage != "" && !repo.homepage.match(/cmv.github.io\/$/)) {
+      if (repo.homepage !== null && repo.homepage != "" /*&& !repo.homepage.match(/cmv.github.io\/$/)*/) {
 					projectPage = constr.create("a", { innerHTML: "visit project page", href: repo.homepage }, repoBox);
 					dClass.add(projectPage, "project-link");
 
