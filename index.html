@@ -1,0 +1,93 @@
+<html>
+<head>
+<title>CMV on GitHub</title>
+<link rel="stylesheet" href="./css/isotope.css" />
+<link rel="stylesheet" href="./css/style.css" />
+<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.0/dojo-release-1.8.0/dijit/themes/tundra/tundra.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"data-dojo-config="async: true"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="./js/jquery.isotope.min.js"></script>
+<script type="text/javascript">
+require(["dojo/dom", "dojo/request/xhr", "dojo/_base/array", "dojo/dom-construct", "dojo/dom-class", "dojo/on", "dijit/Tooltip", "dojo/domReady!"], function(dom, xhr, array, constr, dClass, on, Tooltip){
+
+	on(dom.byId("profile-circle"), "click", function(){
+		window.location.href = "https://twitter.com/DavidSpriggs";
+	});
+
+	new Tooltip({
+	    connectId: dom.byId("profile-circle"),
+	    label: "Visit my Twitter",
+	    position: ["below", "after"]
+	});
+
+    xhr("https://api.github.com/users/cmv/repos?sort=full_name?type=all", {
+		handleAs: "json"
+	}).then(function(data){
+		//-- Sort through all github repos --//
+		array.forEach(data, function(repo){
+			if (!repo.fork) {
+				//-- If repo is not a fork, add it to the list --//
+				repoBox = constr.create("div", { id: repo.name }, dom.byId("results"));
+				dClass.add(repoBox, "repo ");
+
+				repoHeader = constr.create("div", { }, repoBox);
+				dClass.add(repoHeader, "repo-header " + repo.language);
+
+				repoTitle = constr.create("h2", { }, repoHeader);
+				dClass.add(repoTitle, "repo-title");
+
+				repoLink = constr.create("a", { href: repo.html_url, innerHTML: repo.name }, repoTitle);
+				repoLanguage = constr.create("h3", { innerHTML: repo.language }, repoHeader);
+				dClass.add(repoLanguage, "repo-language " + repo.language);
+
+				constr.create("p", { innerHTML: repo.description }, repoBox);
+
+				if (repo.homepage !== null && repo.homepage != "" && !repo.homepage.match(/davidspriggs.github.io\/$/)) {
+					projectPage = constr.create("a", { innerHTML: "visit project page", href: repo.homepage }, repoBox);
+					dClass.add(projectPage, "project-link");
+
+				}
+
+				statsBox = constr.create("p", {}, repoBox);
+				dClass.add(statsBox, "stats");
+
+				forkedBox = constr.create("span", { innerHTML: repo.forks_count }, statsBox);
+				dClass.add(forkedBox, "icon-fork");
+
+				starredBox = constr.create("span", { innerHTML: repo.watchers_count }, statsBox);
+				dClass.add(starredBox, "icon-star");
+
+				console.debug(repo);
+			}
+		});
+		//-- Activate jQuery Isotope --//
+		$('#results').isotope({
+			itemSelector : '.repo',
+			layoutMode : 'masonry'
+		});
+	});
+
+});
+</script>
+</head>
+<body>
+<div class="header">
+<div id="profile-circle" class="profile-border"><img class="profile-photo" src="https://avatars2.githubusercontent.com/u/8619062?v=2&s=200"></div>
+<h1>Configurable Map Viewer</h1>
+<h2>make it your own</h2>
+</div>
+<div id="results">
+
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-510540-7', 'cmv.github.io');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
