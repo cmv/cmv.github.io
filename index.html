@@ -42,7 +42,7 @@ require(["dojo/dom", "dojo/request/xhr", "dojo/_base/array", "dojo/dom-construct
 
 				constr.create("p", { innerHTML: repo.description }, repoBox);
 
-				if (repo.homepage !== null && repo.homepage != "" && !repo.homepage.match(/davidspriggs.github.io\/$/)) {
+				if (repo.homepage !== null && repo.homepage != "" && !repo.homepage.match(/cmv.github.io\/$/)) {
 					projectPage = constr.create("a", { innerHTML: "visit project page", href: repo.homepage }, repoBox);
 					dClass.add(projectPage, "project-link");
 
